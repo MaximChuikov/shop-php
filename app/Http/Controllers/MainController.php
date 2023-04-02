@@ -24,8 +24,8 @@ class MainController extends Controller
     }
 
     public function product($category, $product = null) {
-        dump($product);
-        return view('product', ['product' => $product]);
+            $dbProduct = Product::where('code', $product)->first();
+        return view('product', ['product' => $dbProduct]);
     }
     public function basket() {
         return view('basket');
