@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
     public function index() {
+
         return view('index');
     }
 
@@ -21,7 +22,14 @@ class MainController extends Controller
         return view('category', compact('category'));
     }
 
-    public function product($product = null) {
+    public function product($category, $product = null) {
         return view('product', ['product' => $product]);
+    }
+    public function basket() {
+        return view('basket');
+    }
+
+    public function basketPlace() {
+        return view('order');
     }
 }
