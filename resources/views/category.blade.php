@@ -1,6 +1,9 @@
 @extends('master')
 
-@section('title', 'Категория ' . $category->name)
+@isset($category)
+    @section('title', 'Категория ' . $category->name)
+@endisset
+
 
 @section('content')
     <div class="starter-template">

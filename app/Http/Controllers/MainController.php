@@ -27,11 +27,5 @@ class MainController extends Controller
             $dbProduct = Product::where('code', $product)->first();
         return view('product', ['product' => $dbProduct]);
     }
-    public function basket() {
-        return view('basket');
-    }
 
-    public function basketPlace() {
-        return view('order');
-    }
 }
