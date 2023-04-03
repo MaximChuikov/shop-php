@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\BasketIsNotEmpty;
+use App\Http\Middleware\CheckIsAdmin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -54,6 +56,8 @@ class Kernel extends HttpKernel
      */
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        'is_admin' => CheckIsAdmin::class,
+        'basket_not_empty' => BasketIsNotEmpty::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
