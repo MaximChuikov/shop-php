@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\BasketController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -18,12 +17,11 @@ Route::group([
     'namespace' => 'Admin',
 ], function () {
     Route::group(['middleware' => 'is_admin'], function () {
-        Route::get('/orders', 'OrderController@index')->name('home');
+        Route::get('/orders', [OrderController::class, 'index'])->name('home');
     });
 });
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('get-logout');
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'basket'], function () {
     Route::post('/add/{id}', [BasketController::class, 'basketAdd'])->name('basket-add');
