@@ -8,13 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot('count')->withTimestamps();
     }
 
-    public function getFullPrice()
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
+    public function calculateFullSum()
     {
         $sum = 0;
         foreach ($this->products as $product) {

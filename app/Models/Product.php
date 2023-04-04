@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
-    protected $fillable = ['name', 'code', 'price',
-        'category_id', 'description', 'image',
-        'hit', 'new', 'recommend'];
+    protected $fillable = ['name', 'code', 'price', 'category_id', 'description', 'image', 'hit', 'new', 'recommend'];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
-    public function getPriceForCount() {
+
+    public function getPriceForCount()
+    {
         if (!is_null($this->pivot)) {
             return $this->pivot->count * $this->price;
         }
