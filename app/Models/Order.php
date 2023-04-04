@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Mail\OrderCreated;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Order extends Model
 {
@@ -43,7 +45,7 @@ class Order extends Model
         return session('full_order_sum', 0);
     }
 
-    public function saveOrder($name, $phone)
+    public function saveOrder($name, $phone, $email)
     {
         if ($this->status == 0) {
             $this->name = $name;
@@ -51,6 +53,8 @@ class Order extends Model
             $this->status = 1;
             $this->save();
             session()->forget('orderId');
+            Mail::to($email)->send(new OrderCreated($name, $this));
+            // TODO: send to my email
             return true;
         } else {
             return false;

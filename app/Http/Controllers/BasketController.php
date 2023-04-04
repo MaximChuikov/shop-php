@@ -27,7 +27,7 @@ class BasketController extends Controller
             return redirect()->route('index');
         }
         $order = Order::find($orderId);
-        $success = $order->saveOrder($request->name, $request->phone);
+        $success = $order->saveOrder($request->name, $request->phone, Auth::user()->email);
 
         if ($success) {
             session()->flash('success', 'Ваш заказ принят в обработку!');
@@ -35,6 +35,7 @@ class BasketController extends Controller
             session()->flash('warning', 'Случилась ошибка');
         }
         Order::eraseOrderSum();
+
         return redirect()->route('index');
     }
 

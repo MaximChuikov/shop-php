@@ -71,4 +71,4 @@ Route::get('/categories', [MainController::class, 'categories'])->name('categori
 Route::get('/', [MainController::class, 'index'])->name('index');
 Route::get('/all-categories', [MainController::class, 'categories'])->name('all-categories');
 Route::get('/{category}', [MainController::class, 'category'])->name('category');
-Route::get('/{category}/{product?}', [MainController::class, 'product'])->name('product');
+Route::get('/{category}/{product}', [MainController::class, 'product'])->name('product');

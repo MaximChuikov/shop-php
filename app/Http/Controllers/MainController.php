@@ -46,7 +46,7 @@ class MainController extends Controller
 
     public function product($category, $product = null)
     {
-        $dbProduct = Product::where('code', $product)->first();
+        $dbProduct = Product::where('code', $product)->firstOrFail();
         return view('product', ['product' => $dbProduct]);
     }
 
