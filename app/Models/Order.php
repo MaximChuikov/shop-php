@@ -23,6 +23,22 @@ class Order extends Model
         return $sum;
     }
 
+    public static function eraseOrderSum()
+    {
+        session()->forget('full_order_sum');
+    }
+
+    public static function changeFullSum($changeSum)
+    {
+        $sum = self::getFullSum() + $changeSum;
+        session(['full_order_sum' => $sum]);
+    }
+
+    public static function getFullSum()
+    {
+        return session('full_order_sum', 0);
+    }
+
     public function saveOrder($name, $phone)
     {
         if ($this->status == 0) {
