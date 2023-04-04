@@ -8,10 +8,8 @@ class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,9 +17,9 @@ class CategoryRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = [
             'code' => 'required|min:3|max:255|unique:categories,code',
@@ -35,8 +33,7 @@ class CategoryRequest extends FormRequest
 
         return $rules;
     }
-
-    public function messages()
+    public function messages(): array
     {
         return [
             'required' => 'Поле :attribute обязательно для ввода',
