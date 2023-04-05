@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\RolesController;
 
 // Drop unused routes
 Auth::routes([
@@ -40,6 +41,8 @@ Route::group(['middleware' => 'auth'], function () {
             'prefix' => 'admin',
         ], function () {
             Route::resource('categories', CategoryController::class);
+            Route::get('/roles', [RolesController::class, 'index'])->name('roles');
+            Route::post('/roles', [RolesController::class, 'addRole'])->name('roles.add');
         });
     });
 

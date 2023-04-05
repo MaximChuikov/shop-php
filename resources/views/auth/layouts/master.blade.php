@@ -30,7 +30,7 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     @admin
-                    <li><a href="{{ /*TODO*/ '#' }}">Управление ролями</a></li>
+                    <li><a href="{{ route('roles') }}">Управление ролями</a></li>
                     <li><a href="{{ route('categories.index') }}">Категории</a></li>
                     @endadmin
                     @seller
