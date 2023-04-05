@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
-class SellerProvider extends ServiceProvider
+class CustomerProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -21,8 +21,8 @@ class SellerProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::if('seller', function () {
-            return auth()->check() && auth()->user()->isSeller();
+        Blade::if('customer', function () {
+            return auth()->check() && !auth()->user()->isSeller() && !auth()->user()->isAdmin();
         });
     }
 }

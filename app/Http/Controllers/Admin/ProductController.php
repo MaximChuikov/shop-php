@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = Product::products()->paginate(10);
         return view('auth.products.index', compact('products'));
     }
 
@@ -40,7 +40,6 @@ class ProductController extends Controller
         $params['image'] = $path;
         Product::create($params);
         return redirect()->route('products.index');
-
     }
 
     /**
@@ -49,7 +48,6 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return view('auth.products.show', compact('product'));
-
     }
 
     /**

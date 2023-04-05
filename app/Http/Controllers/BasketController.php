@@ -59,7 +59,8 @@ class BasketController extends Controller
     {
         $orderId = session('orderId');
         if (is_null($orderId)) {
-            $order = Order::create(['address' => 'не указан']);
+            $product = Product::find($productId);
+            $order = Order::create(['address' => 'не указан', 'seller_id' => $product->seller_id]);
             session(['orderId' => $order->id]);
         } else {
             $order = Order::find($orderId);

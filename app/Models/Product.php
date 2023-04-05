@@ -5,15 +5,23 @@ namespace App\Models;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
     protected $fillable = ['name', 'code', 'price', 'category_id', 'description', 'image', 'hit', 'new', 'recommend'];
 
+    public function scopeProducts($query)
+    {
+        $sellerId = Auth::user()->id;
+        return $query->where('seller_id', $sellerId);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+
     public function seller()
     {
         return $this->belongsTo(User::class, 'id', 'seller_id');

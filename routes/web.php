@@ -9,15 +9,16 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 
-//
+// Drop unused routes
 Auth::routes([
     'reset' => false,
     'confirm' => false,
     'verify' => false,
 ]);
-//
 
+//Auth routes
 Route::group(['middleware' => 'auth'], function () {
+    //Customer routes
     Route::group([
         'prefix' => 'person',
         'namespace' => 'Person',
@@ -28,34 +29,41 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/orders/received', [OrderController::class, 'received'])->name('orders.setReceived');
     });
 
+    //Admin routes
     Route::group([
         'namespace' => 'Admin',
-        'prefix' => 'admin',
+        'middleware' => 'is_admin'
     ], function () {
-        Route::group(['middleware' => 'is_admin'], function () {
+        Route::resource('categories', CategoryController::class);
+
+        Route::group([
+            'prefix' => 'admin',
+        ], function () {
+            Route::resource('categories', CategoryController::class);
+        });
+    });
+
+    //Seller routes
+    Route::group([
+        'namespace' => 'Admin',
+        'middleware' => 'seller'
+    ], function () {
+        Route::get('/orders', [OrderController::class, 'index'])->name('home');
+        Route::resource('products', ProductController::class);
+
+        Route::group([
+            'prefix' => 'admin',
+        ], function () {
             Route::get('/orders', [OrderController::class, 'index'])->name('home');
             Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
             Route::post('/orders/ahead', [OrderController::class, 'ahead'])->name('orders.ahead');
+
+            Route::resource('products', ProductController::class);
         });
-        Route::resource('categories', CategoryController::class);
-        Route::resource('products', ProductController::class);
-
     });
 });
 
-Route::group([
-    'middleware' => 'auth',
-    'namespace' => 'Admin',
-], function () {
-    Route::group(['middleware' => 'is_admin'], function () {
-        Route::get('/orders', [OrderController::class, 'index'])->name('home');
-    });
-    Route::resource('categories', CategoryController::class);
-    Route::resource('products', ProductController::class);
-});
-//
-Route::get('/logout', [LoginController::class, 'logout'])->name('get-logout');
-//
+//Basket routes
 Route::group(['prefix' => 'basket'], function () {
     Route::post('/add/{id}', [BasketController::class, 'basketAdd'])->name('basket-add');
 
@@ -68,6 +76,8 @@ Route::group(['prefix' => 'basket'], function () {
         Route::post('/place', [BasketController::class, 'basketConfirm'])->name('basket-confirm');
     });
 });
+//Free routes
+Route::get('/logout', [LoginController::class, 'logout'])->name('get-logout');
 Route::get('/categories', [MainController::class, 'categories'])->name('categories');
 Route::get('/', [MainController::class, 'index'])->name('index');
 Route::get('/all-categories', [MainController::class, 'categories'])->name('all-categories');

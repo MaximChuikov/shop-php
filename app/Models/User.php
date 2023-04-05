@@ -52,9 +52,13 @@ class User extends Authenticatable
         return $this->is_seller === 1;
     }
 
-    public function orders()
+    public function sellerOrders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'seller_id', 'id');
+    }
+    public function customerOrders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
     }
     public function products()
     {

@@ -12,16 +12,18 @@ use Illuminate\Support\Facades\Mail;
 
 class Order extends Model
 {
-    protected $fillable = ['address'];
+    protected $fillable = ['address', 'seller_id', 'user_id', 'phone', 'status', 'name'];
 
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot('count')->withTimestamps();
     }
-
-    public function scopeActive($query)
+    public function productCount(Product $product) {
+        return $this->products()->where('product_id', $product->id)->sum('count');
+    }
+    public function seller()
     {
-        return $query->where('status', '>=', 1);
+        return $this->hasOne(User::class, 'id', 'seller_id');
     }
 
     public function statusText()
@@ -38,16 +40,16 @@ class Order extends Model
 
     public function scopeOrders($query)
     {
-        $isAdmin = Auth::user()->isAdmin();
-        $statusMax = $isAdmin ? 3 : 4;
-        return $isAdmin
-            ? (
-            $query->where('status', '<=', $statusMax)
-                ->where('status', '>=', 1)
-            ) : (
-            $query->where('user_id', Auth::user()->id)->where('status', '<=', $statusMax)
-                ->where('status', '>=', 1)
-            );
+        //Get only sellers orders
+        if (Auth::user()->isSeller()) {
+            return $query->where('seller_id', Auth::user()->id)->where('status', '<=', 3)
+                ->where('status', '>=', 1);
+        }
+        //Get
+        else {
+            return $query->where('user_id', Auth::user()->id)->where('status', '<=', 4)
+                ->where('status', '>=', 0);
+        }
     }
 
     public function calculateFullSum()
@@ -78,18 +80,30 @@ class Order extends Model
     public function saveOrder($name, $phone, $address, User $user)
     {
         if ($this->status == 0) {
-            $this->name = $name;
-            $this->phone = $phone;
-            $this->address = $address;
-            $this->status = 1;
-            $this->save();
-            session()->forget('orderId');
+            $orderProducts = $this->products;
+            $productsBySeller = $orderProducts->groupBy('seller_id');
+            foreach ($productsBySeller as $seller => $sellerProducts) {
+                $sellerOrder = new Order([
+                    'name' => $name,
+                    'phone' => $phone,
+                    'address' => $address,
+                    'user_id' => $user->id,
+                    'seller_id' => $seller,
+                    'status' => 1,
+                ]);
+                $sellerOrder->save();
 
+                $pivotValues = $sellerProducts->pluck('pivot.count', 'id')->toArray();
+
+                $pivotValues2 = collect($pivotValues)->mapWithKeys(function($count, $id) {
+                    return [$id => ['count' => $count]];
+                })->toArray();
+                $sellerOrder->products()->sync($pivotValues2);
+                MailSender::sellerOrderCreation(User::find($seller), $sellerOrder);
+            }
+            session()->forget('orderId');
             MailSender::customerOrderCreation($user, $this);
-            //TODO найти продавцов товара
-            $sellers = User::where('is_seller', 1)->get();
-            foreach ($sellers as $seller)
-                MailSender::sellerOrderCreation($seller, $this);
+            $this->delete();
             return true;
         } else {
             return false;

@@ -33,7 +33,11 @@
             </tr>
             <tr>
                 <td>Картинка</td>
-                <td><img src="{{ Storage::url($product->image) }}" height="240px"></td>
+                <td><img src="{{ Storage::url($product->image) }}" height="240px" alt="{{ $product->name }}"></td>
+            </tr>
+            <tr>
+                <td>Цена</td>
+                <td>{{ $product->price }} руб.</td>
             </tr>
             <tr>
                 <td>Категория</td>

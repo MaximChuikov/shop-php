@@ -24,7 +24,6 @@
                 <li @routeactive('categor*')><a href="{{ route('categories') }}">Категории</a>
                 </li>
                 <li @routeactive('basket*')><a href="{{ route('basket') }}">В корзину</a></li>
-                <li><a href="{{ route('index') }}">Сбросить проект в начальное состояние</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -34,10 +33,14 @@
 
                 @auth
                     @admin
-                    <li><a href="{{ route('home') }}">Панель администратора</a></li>
-                @else
-                    <li><a href="{{ route('person.orders.index') }}">Мои заказы</a></li>
+                    <li><a href="{{ route('categories.index') }}">Панель администратора</a></li>
                     @endadmin
+                    @seller
+                    <li><a href="{{ route('person.orders.index') }}">Панель продавца</a></li>
+                    @endseller
+                    @customer
+                    <li><a href="{{ route('person.orders.index') }}">Мои заказы</a></li>
+                    @endcustomer
                     <li><a href="{{ route('get-logout') }}">Выйти</a></li>
                 @endauth
             </ul>

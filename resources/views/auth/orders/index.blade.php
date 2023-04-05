@@ -45,11 +45,11 @@
                     <td class="d-inline-flex" style="gap: 8px">
                         <div class="btn-group" role="group">
                             <a class="btn btn-success" type="button"
-                               @admin href="{{ route('orders.show', $order) }}"
-                               @else href="{{ route('person.orders.show', $order) }}"
+                                @admin href="{{ route('orders.show', $order) }}"
+                                @else href="{{ route('person.orders.show', $order) }}"
                                 @endadmin>Открыть</a>
                         </div>
-                        @admin
+                        @seller
                         <form method="POST" action="{{ route('orders.ahead') }}">
                             @csrf
                             <input type="hidden" name="orderId" value="{{ $order->id }}">
@@ -63,7 +63,7 @@
                                     <input type="submit" class="btn btn-warning" value="Заказ получен"/>
                                 </form>
                             @endif
-                        @endadmin
+                        @endseller
 
                     </td>
                 </tr>
