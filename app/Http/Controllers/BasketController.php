@@ -27,7 +27,7 @@ class BasketController extends Controller
             return redirect()->route('index');
         }
         $order = Order::find($orderId);
-        $success = $order->saveOrder($request->name, $request->phone, $request->address_user, Auth::user()->email);
+        $success = $order->saveOrder($request->name, $request->phone, $request->address_user, Auth::user());
 
         if ($success) {
             session()->flash('success', 'Ваш заказ принят в обработку!');

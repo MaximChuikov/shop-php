@@ -47,8 +47,17 @@ class User extends Authenticatable
         return $this->is_admin === 1;
     }
 
+    public function isSeller()
+    {
+        return $this->is_seller === 1;
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'seller_id', 'id');
     }
 }

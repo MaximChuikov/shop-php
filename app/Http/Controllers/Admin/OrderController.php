@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MailSender;
+use App\Mail\OrderCreated;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -16,7 +20,6 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-//        dd($order->statusText());
         return view('auth.orders.show', compact('order'));
     }
     public function ahead(Request $request)
@@ -24,10 +27,8 @@ class OrderController extends Controller
         $order = Order::find($request->orderId);
         $order->status += 1;
         $order->save();
-        //TODO отправка email клиенту о смене статуса заказа
-        $user = $order->user_id;
-
-        // Mail::send;
+        $customer = User::find($order->user_id);
+        MailSender::statusChanged($customer, $order);
         session()->flash('success', 'Статус заказа обновлен! Клиенту отправлено письмо о смене статуса заказа.');
 
         return redirect()->route('home');
@@ -37,10 +38,6 @@ class OrderController extends Controller
         $order = Order::find($request->orderId);
         $order->status += 1;
         $order->save();
-        //TODO отправка email клиенту и продавцу о получении заказа
-        $user = $order->user_id;
-
-        // Mail::send;
         session()->flash('success', 'Вы получили заказ, заказывайте еще!');
 
         return redirect()->route('person.orders.index');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\MailSender;
 use App\Mail\OrderCreated;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 class Order extends Model
 {
     protected $fillable = ['address'];
+
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot('count')->withTimestamps();
@@ -73,7 +75,7 @@ class Order extends Model
         return session('full_order_sum', 0);
     }
 
-    public function saveOrder($name, $phone, $address, $email)
+    public function saveOrder($name, $phone, $address, User $user)
     {
         if ($this->status == 0) {
             $this->name = $name;
@@ -82,8 +84,12 @@ class Order extends Model
             $this->status = 1;
             $this->save();
             session()->forget('orderId');
-            Mail::to($email)->send(new OrderCreated($name, $this));
-            // TODO: send to my email
+
+            MailSender::customerOrderCreation($user, $this);
+            //TODO найти продавцов товара
+            $sellers = User::where('is_seller', 1)->get();
+            foreach ($sellers as $seller)
+                MailSender::sellerOrderCreation($seller, $this);
             return true;
         } else {
             return false;
