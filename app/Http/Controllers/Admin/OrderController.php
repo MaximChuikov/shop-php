@@ -32,4 +32,17 @@ class OrderController extends Controller
 
         return redirect()->route('home');
     }
+    public function received(Request $request)
+    {
+        $order = Order::find($request->orderId);
+        $order->status += 1;
+        $order->save();
+        //TODO отправка email клиенту и продавцу о получении заказа
+        $user = $order->user_id;
+
+        // Mail::send;
+        session()->flash('success', 'Вы получили заказ, заказывайте еще!');
+
+        return redirect()->route('person.orders.index');
+    }
 }

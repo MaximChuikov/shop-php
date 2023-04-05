@@ -53,8 +53,16 @@
                         <form method="POST" action="{{ route('orders.ahead') }}">
                             @csrf
                             <input type="hidden" name="orderId" value="{{ $order->id }}">
-                            <input type="submit" class="btn btn-warning" value="Продвинуть статус" />
+                            <input type="submit" class="btn btn-warning" value="Продвинуть статус"/>
                         </form>
+                        @else
+                            @if($order->status == 4)
+                                <form method="POST" action="{{ route('person.orders.setReceived') }}">
+                                    @csrf
+                                    <input type="hidden" name="orderId" value="{{ $order->id }}">
+                                    <input type="submit" class="btn btn-warning" value="Заказ получен"/>
+                                </form>
+                            @endif
                         @endadmin
 
                     </td>
