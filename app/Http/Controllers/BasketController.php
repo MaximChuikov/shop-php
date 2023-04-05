@@ -27,10 +27,15 @@ class BasketController extends Controller
             return redirect()->route('index');
         }
         $order = Order::find($orderId);
-        $success = $order->saveOrder($request->name, $request->phone, Auth::user()->email);
+        $success = $order->saveOrder($request->name, $request->phone, $request->address_user, Auth::user()->email);
 
         if ($success) {
             session()->flash('success', 'Ваш заказ принят в обработку!');
+            $user = Auth::user();
+            $user->name = $request->name;
+            $user->phone = $request->phone;
+            $user->address = $request->address_user;
+            $user->save();
         } else {
             session()->flash('warning', 'Случилась ошибка');
         }
@@ -46,15 +51,15 @@ class BasketController extends Controller
             return redirect()->route('index');
         }
         $order = Order::find($orderId);
-        return view('order', compact('order'));
-
+        $user = Auth::user();
+        return view('order', compact(['order', 'user']));
     }
 
     public function basketAdd($productId)
     {
         $orderId = session('orderId');
         if (is_null($orderId)) {
-            $order = Order::create();
+            $order = Order::create(['address' => 'не указан']);
             session(['orderId' => $order->id]);
         } else {
             $order = Order::find($orderId);

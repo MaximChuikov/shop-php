@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['middleware' => 'is_admin'], function () {
             Route::get('/orders', [OrderController::class, 'index'])->name('home');
             Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+            Route::post('/orders/ahead', [OrderController::class, 'ahead'])->name('orders.ahead');
         });
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
@@ -50,7 +51,6 @@ Route::group([
     });
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
-
 });
 //
 Route::get('/logout', [LoginController::class, 'logout'])->name('get-logout');

@@ -18,10 +18,16 @@
                     Телефон
                 </th>
                 <th>
+                    Адрес
+                </th>
+                <th>
                     Когда отправлен
                 </th>
                 <th>
                     Сумма
+                </th>
+                <th>
+                    Статус
                 </th>
                 <th>
                     Действия
@@ -32,15 +38,25 @@
                     <td>{{ $order->id}}</td>
                     <td>{{ $order->name }}</td>
                     <td>{{ $order->phone }}</td>
+                    <td>{{ $order->address }}</td>
                     <td>{{ $order->created_at->format('H:i d/m/Y') }}</td>
                     <td>{{ $order->calculateFullSum() }} руб.</td>
-                    <td>
+                    <td>{{ $order->statusText() }}</td>
+                    <td class="d-inline-flex" style="gap: 8px">
                         <div class="btn-group" role="group">
                             <a class="btn btn-success" type="button"
                                @admin href="{{ route('orders.show', $order) }}"
                                @else href="{{ route('person.orders.show', $order) }}"
-                               @endadmin>Открыть</a>
+                                @endadmin>Открыть</a>
                         </div>
+                        @admin
+                        <form method="POST" action="{{ route('orders.ahead') }}">
+                            @csrf
+                            <input type="hidden" name="orderId" value="{{ $order->id }}">
+                            <input type="submit" class="btn btn-warning" value="Продвинуть статус" />
+                        </form>
+                        @endadmin
+
                     </td>
                 </tr>
             @endforeach

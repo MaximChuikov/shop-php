@@ -10,12 +10,26 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::active()->paginate(10);
+        $orders = Order::orders()->paginate(10);
         return view('auth.orders.index', compact('orders'));
     }
 
     public function show(Order $order)
     {
+//        dd($order->statusText());
         return view('auth.orders.show', compact('order'));
+    }
+    public function ahead(Request $request)
+    {
+        $order = Order::find($request->orderId);
+        $order->status += 1;
+        $order->save();
+        //TODO отправка email клиенту о смене статуса заказа
+        $user = $order->user_id;
+
+        // Mail::send;
+        session()->flash('success', 'Статус заказа обновлен! Клиенту отправлено письмо о смене статуса заказа.');
+
+        return redirect()->route('home');
     }
 }

@@ -13,9 +13,9 @@
 
                     <div class="container">
                         <div class="form-group">
-                            <label for="name" class="control-label col-lg-offset-3 col-lg-2">Имя: </label>
+                            <label for="name" class="control-label col-lg-offset-3 col-lg-2">Ваше имя: </label>
                             <div class="col-lg-4">
-                                <input type="text" name="name" id="name" value="" class="form-control">
+                                <input type="text" name="name" id="name" value="{{ $user->name }}" class="form-control">
                             </div>
                         </div>
                         <br>
@@ -24,12 +24,19 @@
                             <label for="phone" class="control-label col-lg-offset-3 col-lg-2">Номер
                                 телефона: </label>
                             <div class="col-lg-4">
-                                <input type="text" name="phone" id="phone" value="" class="form-control">
+                                <input type="text" name="phone" id="phone" value="{{ $user->phone }}" class="form-control">
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group">
+                            <label for="address_user" class="control-label col-lg-offset-3 col-lg-2">Адрес доставки: </label>
+                            <div class="col-lg-4">
+                                <input type="text" name="address_user" id="address_user" value="{{ $user->address }}" class="form-control">
                             </div>
                         </div>
                     </div>
                     <br>
-                    <input type="hidden" name="_token">
                     <br>
                     @csrf
                     <input type="submit" class="btn btn-success" value="Подтвердить заказ">
