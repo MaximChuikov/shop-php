@@ -22,6 +22,42 @@
                 <button class="btn btn-success" type="submit">Сохранить</button>
             </div>
         </form>
+
+        <h3>Продавцы</h3>
+
+        <table class="table mt-5">
+            <tbody>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Имя продавца
+                </th>
+                <th>
+                    Почта
+                </th>
+            </tr>
+            @foreach($users as $user)
+                <tr>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <form method="POST" enctype="multipart/form-data" action="{{ route('roles.delete') }}">
+                                <div>
+                                    @csrf
+                                    <input type="hidden" name="email" id="email" value="{{ $user->email }}" />
+                                    <button class="btn btn-warning" type="submit">Удалить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+
     </div>
 @endsection
 

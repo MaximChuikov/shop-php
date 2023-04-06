@@ -36,7 +36,7 @@
                     <li><a href="{{ route('categories.index') }}">Панель администратора</a></li>
                     @endadmin
                     @seller
-                    <li><a href="{{ route('admin.orders.index') }}">Панель продавца</a></li>
+                    <li><a href="{{ route('home') }}">Панель продавца</a></li>
                     @endseller
                     @customer
                     <li><a href="{{ route('person.orders.index') }}">Мои заказы</a></li>

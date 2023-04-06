@@ -11,7 +11,10 @@ class MainController extends Controller
 {
     public function index(ProductsFilterRequest $request)
     {
-        $productsQuery = Product::query();
+        $productsQuery = Product::query()
+            ->whereHas('seller', function ($query) {
+                $query->where('is_seller', 1);
+            });
 
         if ($request->filled('price_from')) {
             $productsQuery->where('price', '>=', $request->price_from);

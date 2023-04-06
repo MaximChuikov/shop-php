@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('categories', CategoryController::class);
             Route::get('/roles', [RolesController::class, 'index'])->name('roles');
             Route::post('/roles', [RolesController::class, 'addRole'])->name('roles.add');
+            Route::post('/roles-del', [RolesController::class, 'deleteRole'])->name('roles.delete');
         });
     });
 

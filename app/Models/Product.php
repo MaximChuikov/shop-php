@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'code', 'price', 'category_id', 'description', 'image', 'hit', 'new', 'recommend'];
+    protected $fillable = ['name', 'code', 'price', 'category_id', 'description', 'image', 'hit', 'new', 'recommend', 'seller_id'];
 
     public function scopeProducts($query)
     {
@@ -24,7 +24,7 @@ class Product extends Model
 
     public function seller()
     {
-        return $this->belongsTo(User::class, 'id', 'seller_id');
+        return $this->belongsTo(User::class,'seller_id');
     }
 
     public function getPriceForCount()

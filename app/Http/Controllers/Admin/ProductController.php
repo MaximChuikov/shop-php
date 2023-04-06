@@ -27,7 +27,6 @@ class ProductController extends Controller
     {
         $categories = Category::get();
         return view('auth.products.form', compact('categories'));
-
     }
 
     /**
@@ -38,6 +37,7 @@ class ProductController extends Controller
         $path = $request->file('image')->store('products');
         $params = $request->all();
         $params['image'] = $path;
+        $params['seller_id'] = auth()->user()->id;
         Product::create($params);
         return redirect()->route('products.index');
     }
@@ -57,7 +57,6 @@ class ProductController extends Controller
     {
         $categories = Category::get();
         return view('auth.products.form', compact('product', 'categories'));
-
     }
 
     /**
