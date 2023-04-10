@@ -1,3 +1,6 @@
+<p>все расписано в презентации</p>
+<a href="https://docs.google.com/presentation/d/1cOO8t5vnHz1YdohbfHZ9htgp2YocykG0DRZSHoE6BFc/edit?usp=sharing">ссылка</a>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
